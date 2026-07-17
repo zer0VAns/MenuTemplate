@@ -1,0 +1,37 @@
+---
+import type { MenuData } from "../../types/menu";
+import ProductCard from "./ProductCard.astro";
+
+interface Props {
+  menu: MenuData;
+}
+
+const { menu } = Astro.props;
+
+const featuredProducts = menu.categories
+  .flatMap((category) => category.products)
+  .filter((product) => product.featuredTags && product.featuredTags.length > 0);
+---
+
+{featuredProducts.length > 0 && (
+  <section data-featured-section class="py-6">
+    <div class="mb-4 flex items-center gap-3">
+      <span class="h-6 w-1 shrink-0 rounded-full bg-[var(--color-primary)]" aria-hidden="true"></span>
+      <h2 class="font-display text-2xl font-extrabold tracking-tight text-[var(--color-text)]">
+        Especiales
+      </h2>
+    </div>
+
+    <div class="relative">
+      <div class="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 no-scrollbar lg:grid lg:grid-cols-3 lg:overflow-visible lg:snap-none">
+        {featuredProducts.map((product) => (
+          <div class="w-[72%] shrink-0 snap-start sm:w-64 lg:w-auto lg:snap-align-none">
+            <ProductCard product={product} />
+          </div>
+        ))}
+      </div>
+
+      <div class="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-[var(--color-surface-muted)] to-transparent lg:hidden" />
+    </div>
+  </section>
+)}

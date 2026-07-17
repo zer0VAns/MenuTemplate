@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+:root {
+  --color-primary: #7A1E1E;
+  --color-primary-foreground: #FFFFFF;
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #F4EDE4;
+  --color-text: #221512;
+  --color-text-muted: #7A6A63;
+  --color-border: #E8DFD6;
+  --color-unavailable-badge: #4A4038;
+
+  --font-display: "Bricolage Grotesque", sans-serif;
+  --font-body: "Inter", sans-serif;
+
+  --radius-card: 1rem;
+  --radius-image: 0.75rem;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background-color: var(--color-surface-muted);
+}
+
+h1, h2, h3, .font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+button {
+  cursor: pointer;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+dialog[data-product-dialog] {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  max-width: 100vw;
+  max-height: 100vh;
+  width: 100%;
+  height: 100%;
+}
+
+dialog[data-product-dialog]::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}

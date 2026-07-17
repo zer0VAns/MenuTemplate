@@ -1,0 +1,26 @@
+---
+---
+
+<div class="bg-[var(--color-surface)] px-4 pb-3 pt-1 sm:px-6">
+  <div class="relative">
+    <span class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]" aria-hidden="true">
+      🔍
+    </span>
+    <input
+      type="search"
+      data-search-input
+      placeholder="Buscar..."
+      class="w-full rounded-full border border-[var(--color-border)] bg-[var(--color-surface-muted)] py-2 pl-9 pr-3 text-sm text-[var(--color-text)] outline-none transition-colors focus:border-[var(--color-primary)]"
+    />
+  </div>
+</div>
+
+<script>
+  const input = document.querySelector<HTMLInputElement>("[data-search-input]");
+
+  input?.addEventListener("input", () => {
+    window.dispatchEvent(
+      new CustomEvent("search-change", { detail: { query: input.value } })
+    );
+  });
+</script>

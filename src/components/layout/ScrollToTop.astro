@@ -1,0 +1,28 @@
+---
+---
+
+<button
+  type="button"
+  data-scroll-top
+  aria-label="Volver arriba"
+  hidden
+  class="fixed bottom-5 right-5 z-40 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-[var(--color-primary)] text-[var(--color-primary-foreground)] shadow-lg transition-opacity hover:opacity-90"
+>
+  ↑
+</button>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>("[data-scroll-top]");
+
+  if (button) {
+    const SHOW_AFTER_PX = 400;
+
+    window.addEventListener("scroll", () => {
+      button.hidden = window.scrollY < SHOW_AFTER_PX;
+    });
+
+    button.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+</script>

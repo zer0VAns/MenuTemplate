@@ -1,0 +1,109 @@
+---
+import { config } from "../../data/config";
+
+const { businessName, hours, theme } = config;
+
+const navItems = ["Inicio", "Menú", "Nosotros"];
+const activeItem = "Menú";
+---
+
+<header class="flex items-center justify-between gap-3 py-4">
+  <div class="flex items-center gap-3">
+    {theme.logoUrl && (
+      <img
+        src={theme.logoUrl}
+        alt={businessName}
+        class="h-10 w-10 shrink-0 rounded-full object-cover"
+      />
+    )}
+    <h1 class="font-display text-2xl font-extrabold tracking-tight text-[var(--color-text)]">
+      {businessName}
+    </h1>
+  </div>
+
+  <!-- Nav inline, solo visible en desktop -->
+  <nav class="hidden gap-1 sm:flex">
+    {navItems.map((item) => (
+      <button
+        type="button"
+        class:list={[
+          "cursor-pointer rounded-full px-3 py-1.5 text-sm font-medium transition-colors",
+          item === activeItem
+            ? "bg-[var(--color-primary)] text-[var(--color-primary-foreground)]"
+            : "text-[var(--color-text-muted)] hover:bg-[var(--color-surface-muted)] hover:text-[var(--color-text)]",
+        ]}
+      >
+        {item}
+      </button>
+    ))}
+  </nav>
+
+  <div class="flex shrink-0 items-center gap-2">
+    <div class="flex items-center gap-1.5 text-sm text-[var(--color-text-muted)]">
+      <span
+        class:list={[
+          "h-2 w-2 rounded-full",
+          hours.isOpenNow ? "bg-green-500" : "bg-gray-400",
+        ]}
+        aria-hidden="true"
+      />
+      {hours.statusLabel ?? (hours.isOpenNow ? "Abierto" : "Cerrado")}
+    </div>
+
+    <!-- Contenedor propio para botón + panel, así el dropdown se ancla al botón -->
+    <div class="relative sm:hidden">
+      <button
+        type="button"
+        data-menu-toggle
+        aria-label="Abrir menú"
+        aria-expanded="false"
+        class="flex h-9 w-9 cursor-pointer flex-col items-center justify-center gap-1 rounded-full hover:bg-[var(--color-surface-muted)]"
+      >
+        <span class="h-0.5 w-5 bg-[var(--color-text)]"></span>
+        <span class="h-0.5 w-5 bg-[var(--color-text)]"></span>
+        <span class="h-0.5 w-5 bg-[var(--color-text)]"></span>
+      </button>
+
+      <nav
+        data-mobile-menu
+        hidden
+        class="absolute right-0 top-full z-40 mt-2 flex w-40 flex-col gap-1 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-2 shadow-lg"
+      >
+        {navItems.map((item) => (
+          <button
+            type="button"
+            class:list={[
+              "cursor-pointer rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors",
+              item === activeItem
+                ? "bg-[var(--color-primary)] text-[var(--color-primary-foreground)]"
+                : "text-[var(--color-text-muted)] hover:bg-[var(--color-surface-muted)] hover:text-[var(--color-text)]",
+            ]}
+          >
+            {item}
+          </button>
+        ))}
+      </nav>
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+  const menu = document.querySelector<HTMLElement>("[data-mobile-menu]");
+
+  if (toggle && menu) {
+    toggle.addEventListener("click", () => {
+      const isOpen = !menu.hidden;
+      menu.hidden = isOpen;
+      toggle.setAttribute("aria-expanded", String(!isOpen));
+    });
+
+    document.addEventListener("click", (event) => {
+      const target = event.target as Node;
+      if (!menu.hidden && !menu.contains(target) && !toggle.contains(target)) {
+        menu.hidden = true;
+        toggle.setAttribute("aria-expanded", "false");
+      }
+    });
+  }
+</script>

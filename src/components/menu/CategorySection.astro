@@ -1,0 +1,37 @@
+---
+import type { Category } from "../../types/menu";
+import ProductCard from "./ProductCard.astro";
+
+interface Props {
+  category: Category;
+}
+
+const { category } = Astro.props;
+---
+
+<section id={category.id} data-category-section class="py-6">
+  <div class="mb-4 flex items-start gap-3">
+    <span class="mt-1.5 h-6 w-1 shrink-0 rounded-full bg-[var(--color-primary)]" aria-hidden="true"></span>
+    <div>
+      <div class="flex items-center gap-2">
+        <h2 class="font-display text-2xl font-extrabold tracking-tight text-[var(--color-text)]">
+          {category.name}
+        </h2>
+        {category.icon && (
+          <span class="text-lg" aria-hidden="true">{category.icon}</span>
+        )}
+      </div>
+      {category.description && (
+        <p class="mt-0.5 text-sm text-[var(--color-text-muted)]">
+          {category.description}
+        </p>
+      )}
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    {category.products.map((product) => (
+      <ProductCard product={product} />
+    ))}
+  </div>
+</section>

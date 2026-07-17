@@ -1,0 +1,126 @@
+---
+import type { Product } from "../../types/menu";
+import { config } from "../../data/config";
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+
+const isAvailable = product.available !== false;
+
+const priceFormatted = new Intl.NumberFormat(config.language, {
+  style: "currency",
+  currency: config.currency,
+  maximumFractionDigits: 0,
+}).format(product.price);
+
+const dietIcons: Record<string, string> = {
+  vegan: "🌱",
+  vegetarian: "🥬",
+  spicy: "🌶",
+  "gluten-free": "🌾",
+  "lactose-free": "🥛",
+};
+
+const dietLabels: Record<string, string> = {
+  vegan: "Vegano",
+  vegetarian: "Vegetariano",
+  spicy: "Picante",
+  "gluten-free": "Sin gluten",
+  "lactose-free": "Sin lactosa",
+};
+
+const featuredIcons: Record<string, string> = {
+  bestseller: "⭐",
+  new: "🆕",
+  "chef-recommended": "👨‍🍳",
+  "house-special": "🔥",
+};
+
+const primaryFeaturedTag = product.featuredTags?.[0];
+---
+
+<button
+  type="button"
+  data-product-id={product.id}
+  data-product-card
+  data-product-name={product.name}
+  data-product-description={product.description ?? ""}
+  class:list={[
+    "group relative flex w-full items-start gap-3 rounded-[var(--radius-card)] bg-[var(--color-surface)] p-3 text-left transition-shadow",
+    "lg:flex-col lg:items-stretch lg:gap-2 lg:p-3",
+    "hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-primary)]",
+    { "opacity-60": !isAvailable },
+  ]}
+>
+  {primaryFeaturedTag && (
+    <span
+      class="absolute right-2 top-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-[var(--color-surface)] text-sm shadow-sm"
+      title={featuredIcons[primaryFeaturedTag]}
+    >
+      {featuredIcons[primaryFeaturedTag]}
+    </span>
+  )}
+
+  {product.image ? (
+    <div class="relative h-20 w-20 shrink-0 overflow-hidden rounded-[var(--radius-image)] bg-[var(--color-surface-muted)] lg:h-40 lg:w-full">
+      <img
+        src={product.image}
+        alt={product.name}
+        loading="lazy"
+        class:list={[
+          "h-full w-full object-cover transition-transform duration-300",
+          "group-hover:scale-105",
+          { "grayscale": !isAvailable },
+        ]}
+      />
+      {!isAvailable && (
+        <span class="absolute inset-x-0 bottom-0 bg-[var(--color-unavailable-badge)]/90 py-0.5 text-center text-[10px] font-medium uppercase tracking-wide text-white">
+          No disponible
+        </span>
+      )}
+    </div>
+  ) : (
+    !isAvailable && (
+      <span class="absolute left-2 top-2 rounded-full bg-[var(--color-unavailable-badge)]/90 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-white">
+        No disponible
+      </span>
+    )
+  )}
+
+  <div class="flex min-w-0 flex-1 flex-col gap-1">
+    <h3 class="truncate font-display text-base font-semibold leading-tight text-[var(--color-text)]">
+      {product.name}
+    </h3>
+
+    {product.description && (
+      <p class="line-clamp-2 text-sm leading-snug text-[var(--color-text-muted)]">
+        {product.description}
+      </p>
+    )}
+
+    {product.dietTags && product.dietTags.length > 0 && (
+      <div class="flex flex-wrap gap-1.5 pt-0.5">
+        {product.dietTags.map((tag) => (
+          <span class="inline-flex items-center gap-1 rounded-full bg-[var(--color-surface-muted)] px-2 py-0.5 text-[11px] text-[var(--color-text-muted)]">
+            <span aria-hidden="true">{dietIcons[tag]}</span>
+            {dietLabels[tag]}
+          </span>
+        ))}
+      </div>
+    )}
+
+    <div class="mt-auto flex items-end justify-between pt-1">
+      <span class="font-display text-lg font-bold text-[var(--color-primary)]">
+        {priceFormatted}
+      </span>
+      {product.calories && (
+        <span class="text-xs text-[var(--color-text-muted)]">
+          {product.calories} kcal
+        </span>
+      )}
+    </div>
+  </div>
+</button>
