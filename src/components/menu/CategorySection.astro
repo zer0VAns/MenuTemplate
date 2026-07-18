@@ -1,6 +1,7 @@
 ---
 import type { Category } from "../../types/menu";
 import ProductCard from "./ProductCard.astro";
+import Icon from "../ui/Icon.astro";
 
 interface Props {
   category: Category;
@@ -18,7 +19,7 @@ const { category } = Astro.props;
           {category.name}
         </h2>
         {category.icon && (
-          <span class="text-lg" aria-hidden="true">{category.icon}</span>
+          <Icon name={category.icon} class="h-5 w-5 text-[var(--color-primary)]" />
         )}
       </div>
       {category.description && (

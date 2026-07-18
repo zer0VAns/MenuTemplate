@@ -48,12 +48,12 @@ const primaryFeaturedTag = product.featuredTags?.[0];
   data-product-card
   data-product-name={product.name}
   data-product-description={product.description ?? ""}
-  class:list={[
-    "group relative flex w-full items-start gap-3 rounded-[var(--radius-card)] bg-[var(--color-surface)] p-3 text-left transition-shadow",
-    "lg:flex-col lg:items-stretch lg:gap-2 lg:p-3",
-    "hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-primary)]",
-    { "opacity-60": !isAvailable },
-  ]}
+class:list={[
+  "group relative flex w-full items-start gap-3 rounded-[var(--radius-card)] bg-[var(--color-surface)] p-3 text-left shadow-xl transition-shadow",
+  "lg:flex-col lg:items-stretch lg:gap-2 lg:p-3",
+  "hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--color-primary)]",
+  { "opacity-60": !isAvailable },
+]}
 >
   {primaryFeaturedTag && (
     <span

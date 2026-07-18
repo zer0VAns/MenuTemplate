@@ -6,28 +6,38 @@ import ScrollToTop from "../components/layout/ScrollToTop.astro";
 import FeaturedSection from "../components/menu/FeaturedSection.astro";
 import CategorySection from "../components/menu/CategorySection.astro";
 import ProductDetail from "../components/menu/ProductDetail.astro";
+import { config } from "../data/config";
 import { menu } from "../data/menu";
 
 const allProducts = menu.categories.flatMap((category) => category.products);
+const hasBanner = Boolean(config.theme.bannerUrl);
 ---
 
 <MenuLayout>
-  <Header />
+	<Header overBanner={hasBanner} />
+	<div
+		class="relative z-10 rounded-2xl bg-[var(--color-surface)] p-4 shadow-xl sm:p-6 mt-[10px]" 
+	>
 
-  <div class="sticky top-0 z-30 -mx-4 sm:-mx-6">
-    <CategoryNav categories={menu.categories} />
-  </div>
+		<div class="sticky top-0 z-30 -mx-4 sm:-mx-6">
+			<CategoryNav categories={menu.categories} />
+		</div>
+		<FeaturedSection menu={menu} />
 
-  <FeaturedSection menu={menu} />
+		{
+			menu.categories.map((category) => (
+				<CategorySection category={category} />
+			))
+		}
+	</div>
+	<p
+		data-search-empty-state
+		hidden
+		class="py-12 text-center text-sm text-[var(--color-text-muted)]"
+	>
+		No encontramos productos que coincidan con tu búsqueda.
+	</p>
 
-  {menu.categories.map((category) => (
-    <CategorySection category={category} />
-  ))}
-
-  <p data-search-empty-state hidden class="py-12 text-center text-sm text-[var(--color-text-muted)]">
-    No encontramos productos que coincidan con tu búsqueda.
-  </p>
-
-  <ProductDetail products={allProducts} />
-  <ScrollToTop />
+	<ProductDetail products={allProducts} />
+	<ScrollToTop />
 </MenuLayout>

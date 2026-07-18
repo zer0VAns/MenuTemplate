@@ -36,6 +36,7 @@ export interface ThemeConfig {
   secondaryColor?: string;
   fontFamily: string;
   logoUrl?: string;
+    bannerUrl?: string;
 }
 
 export interface BusinessConfig {

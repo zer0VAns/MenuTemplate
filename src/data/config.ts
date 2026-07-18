@@ -10,6 +10,7 @@ export const config: BusinessConfig = {
     secondaryColor: "#F4EDE4",
     fontFamily: "Playfair Display",
     logoUrl: "/images/logo.png",
+    bannerUrl: "/images/banner.jpg",
   },
   hours: {
     isOpenNow: true,

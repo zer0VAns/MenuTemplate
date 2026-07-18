@@ -7,6 +7,7 @@ interface Props {
 }
 
 const { title = config.businessName } = Astro.props;
+const hasBanner = Boolean(config.theme.bannerUrl);
 ---
 
 <!doctype html>
@@ -20,13 +21,38 @@ const { title = config.businessName } = Astro.props;
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <title>{title}</title>
   </head>
-  <body>
-    <main class="mx-auto max-w-md px-4 py-6 sm:max-w-3xl sm:px-6 lg:max-w-6xl">
+  <body class="relative bg-[var(--color-surface)]">
+    {
+      hasBanner && (
+        <div class="pointer-events-none absolute inset-x-0 top-0 z-0 h-[350px] overflow-hidden">
+          <img
+            src={config.theme.bannerUrl}
+            alt=""
+            class="h-full w-full object-cover"
+          />
+          <div
+            class="absolute inset-0 bg-gradient-to-b from-black/10 via-black/25 to-black/55"
+            aria-hidden="true"
+          />
+        </div>
+      )
+    }
+
+    <main
+      class="relative z-10 mx-auto max-w-md px-4 py-6 sm:max-w-3xl sm:px-6 lg:max-w-6xl"
+    >
       <slot />
     </main>
 
     <script src="../scripts/filters.ts"></script>
+    <script>
+      const lucideGlobal = (window as any).lucide;
+      if (typeof lucideGlobal !== "undefined") {
+        lucideGlobal.createIcons();
+      }
+    </script>
   </body>
 </html>

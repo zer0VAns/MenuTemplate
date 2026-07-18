@@ -1,0 +1,23 @@
+---
+interface Props {
+  name?: string;
+  class?: string;
+}
+
+const { name, class: className = "h-5 w-5" } = Astro.props;
+
+const iconMap: Record<string, string> = {
+  salad: "salad",
+  meat: "beef",
+  pasta: "chef-hat",
+  dessert: "cake-slice",
+  drinks: "wine",
+  coffee: "coffee",
+  bakery: "croissant",
+  default: "utensils",
+};
+
+const iconName = (name && iconMap[name]) || iconMap.default;
+---
+
+<i data-lucide={iconName} class={className}></i>
